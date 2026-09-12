@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.resources.painterResource
-
 import panaderiapos.app.shared.generated.resources.Res
 import panaderiapos.app.shared.generated.resources.compose_multiplatform
 
