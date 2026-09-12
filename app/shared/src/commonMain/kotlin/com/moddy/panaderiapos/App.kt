@@ -5,6 +5,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.moddy.panaderiapos.core.theme.PanaderiaTheme
 import com.moddy.panaderiapos.feature.cart.CartScreen
 import com.moddy.panaderiapos.feature.cart.CartViewModel
+import com.moddy.panaderiapos.feature.history.SalesHistoryScreen
+import com.moddy.panaderiapos.feature.history.SalesHistoryViewModel
 import com.moddy.panaderiapos.feature.pricing.PricingCalculatorScreen
 import com.moddy.panaderiapos.feature.pricing.PricingCalculatorViewModel
 
@@ -21,10 +23,16 @@ fun App() {
         )
          */
         // CartScreen(viewModel = CartViewModel(), {}, {})
+        /*
         PricingCalculatorScreen(
             viewModel = PricingCalculatorViewModel(),
             onItemAdded = {},
             onCancel = {},
+        )
+         */
+        SalesHistoryScreen(
+            viewModel = SalesHistoryViewModel(),
+            onNavigateBack = {}
         )
     }
 }
