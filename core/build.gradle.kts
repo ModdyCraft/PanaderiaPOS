@@ -20,7 +20,7 @@ kotlin {
     }
 
     android {
-        namespace = "com.example.panaderiapos.core"
+        namespace = "com.moddy.panaderiapos.core"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 

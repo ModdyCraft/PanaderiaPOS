@@ -20,7 +20,7 @@ dependencies {
 }
 
 android {
-    namespace = "com.example.panaderiapos"
+    namespace = "com.moddy.panaderiapos"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
