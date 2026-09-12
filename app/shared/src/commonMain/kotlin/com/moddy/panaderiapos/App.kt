@@ -2,6 +2,7 @@ package com.moddy.panaderiapos
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import com.moddy.panaderiapos.core.navigation.AppNavigation
 import com.moddy.panaderiapos.core.theme.PanaderiaTheme
 import com.moddy.panaderiapos.feature.cart.CartScreen
 import com.moddy.panaderiapos.feature.cart.CartViewModel
@@ -30,9 +31,12 @@ fun App() {
             onCancel = {},
         )
          */
+        /*
         SalesHistoryScreen(
             viewModel = SalesHistoryViewModel(),
             onNavigateBack = {}
         )
+         */
+        AppNavigation()
     }
 }
