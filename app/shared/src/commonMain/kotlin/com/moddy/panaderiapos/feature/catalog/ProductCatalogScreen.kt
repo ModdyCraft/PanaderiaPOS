@@ -19,13 +19,16 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.moddy.panaderiapos.formatDecimals
 import com.moddy.panaderiapos.models.Product
 import com.moddy.panaderiapos.models.SaleType
 
 @Composable
 fun ProductCatalogScreen(
     viewModel: ProductCatalogViewModel,
-    onNavigateToPricing: (Product, SaleType) -> Unit
+    onNavigateToPricing: (Product, SaleType) -> Unit,
+    onNavigateToCart: () -> Unit,
+    onNavigateToHistory: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var selectedCategoryFilter by remember { mutableStateOf<String?>(null) }
@@ -46,9 +49,9 @@ fun ProductCatalogScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(24.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp) // Separación entre Panel de Búsqueda y Catálogo
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        // --- PANEL 1: BÚSQUEDA Y CATEGORÍAS ---
+        // --- PANEL 1: BÚSQUEDA, ACCIONES Y CATEGORÍAS ---
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
@@ -60,6 +63,24 @@ fun ProductCatalogScreen(
                 modifier = Modifier.padding(20.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                // Barra superior de acciones (Historial y Carrito)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TextButton(onClick = onNavigateToHistory) {
+                        Text("Ver Historial")
+                    }
+
+                    Button(
+                        onClick = onNavigateToCart,
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Text("Ver Carrito")
+                    }
+                }
+
                 // OutlinedTextField de Búsqueda
                 OutlinedTextField(
                     value = uiState.searchQuery,
@@ -70,7 +91,7 @@ fun ProductCatalogScreen(
                     shape = RoundedCornerShape(12.dp)
                 )
 
-                // Chips / Tooltips seleccionables de Categorías
+                // Chips seleccionables de Categorías
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
@@ -111,7 +132,6 @@ fun ProductCatalogScreen(
                 modifier = Modifier.fillMaxSize()
             ) {
                 filteredProducts.forEach { (category, products) ->
-                    // Header de Categoría que ocupa todo el ancho de la Grid
                     item(span = { GridItemSpan(maxLineSpan) }) {
                         Text(
                             text = category,
@@ -121,7 +141,6 @@ fun ProductCatalogScreen(
                         )
                     }
 
-                    // Product Cards
                     items(products) { product ->
                         ProductGridItemCard(
                             product = product,
@@ -160,12 +179,11 @@ private fun ProductGridItemCard(
             .clickable { onClick() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.outlinedCardColors(containerColor = MaterialTheme.colorScheme.surface),
-        border = CardDefaults.outlinedCardBorder().copy(width = 1.5.dp) // Contorno definido para resaltar
+        border = CardDefaults.outlinedCardBorder().copy(width = 1.5.dp)
     ) {
         Column(
             modifier = Modifier.padding(12.dp)
         ) {
-            // Placeholder de imagen con fondo gris
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -183,7 +201,6 @@ private fun ProductGridItemCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Información del Producto
             Text(
                 text = product.name,
                 style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
@@ -193,8 +210,9 @@ private fun ProductGridItemCard(
 
             Spacer(modifier = Modifier.height(4.dp))
 
-            val retailText = product.retailPricing?.let { "${it.unitQuantity}x S/${it.price}" } ?: "-"
-            val wholesaleText = product.wholesalePricing?.let { "${it.unitQuantity}x S/${it.price}" } ?: "-"
+            val retailText = product.retailPricing?.let { "${it.unitQuantity}x S/ ${it.price.formatDecimals()}" } ?: "-"
+            val wholesaleText =
+                product.wholesalePricing?.let { "${it.unitQuantity}x S/ ${it.price.formatDecimals()}" } ?: "-"
 
             Text(
                 text = "Menor: $retailText",

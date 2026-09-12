@@ -1,21 +1,9 @@
 package com.moddy.panaderiapos.feature.auth
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -30,7 +18,8 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel
+    viewModel: LoginViewModel,
+    onLoginSuccess: () -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -38,7 +27,6 @@ fun LoginScreen(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ) {
-        // Panel contenedor semitransparente con bordes redondeados y sombra
         Surface(
             modifier = Modifier
                 .padding(24.dp)
@@ -56,7 +44,6 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                // Título
                 Text(
                     text = "Panadería LA MODERNA",
                     style = MaterialTheme.typography.headlineSmall.copy(
@@ -69,13 +56,17 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(28.dp))
 
-                // OutlinedTextField configurado según las especificaciones
                 OutlinedTextField(
                     value = uiState.sellerId,
                     onValueChange = { viewModel.onEvent(LoginEvent.OnSellerIdChanged(it)) },
                     label = { Text("Identificador") },
-                    placeholder = { Text("V7·······") },
-                    supportingText = { Text("Ingrese tu identificador como vendedor") },
+                    placeholder = { Text("V76722430") },
+                    isError = uiState.isError,
+                    supportingText = {
+                        Text(
+                            text = uiState.errorMessage ?: "Ingrese su identificador como vendedor"
+                        )
+                    },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     modifier = Modifier.fillMaxWidth()
@@ -83,9 +74,13 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Botón de Ingresar
                 Button(
-                    onClick = { viewModel.onEvent(LoginEvent.OnLoginClicked) },
+                    onClick = {
+                        viewModel.onEvent(
+                            LoginEvent.OnLoginClicked(onSuccess = onLoginSuccess)
+                        )
+                    },
+                    enabled = uiState.sellerId.isNotBlank(),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(50.dp),

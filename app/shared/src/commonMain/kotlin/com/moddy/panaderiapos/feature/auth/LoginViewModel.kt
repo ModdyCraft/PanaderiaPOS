@@ -11,13 +11,35 @@ class LoginViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()
 
+    companion object {
+        private const val MOCK_SELLER_ID = "V76722430"
+    }
+
     fun onEvent(event: LoginEvent) {
         when (event) {
             is LoginEvent.OnSellerIdChanged -> {
-                _uiState.update { it.copy(sellerId = event.id) }
+                _uiState.update {
+                    it.copy(
+                        sellerId = event.id,
+                        isError = false,
+                        errorMessage = null
+                    )
+                }
             }
-            LoginEvent.OnLoginClicked -> {
-                // Por el momento no realiza acciones de navegación ni red
+
+            is LoginEvent.OnLoginClicked -> {
+                val currentId = _uiState.value.sellerId.trim()
+                if (currentId == MOCK_SELLER_ID) {
+                    _uiState.update { it.copy(isError = false, errorMessage = null) }
+                    event.onSuccess()
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            isError = true,
+                            errorMessage = "Identificador no válido. Prueba con $MOCK_SELLER_ID"
+                        )
+                    }
+                }
             }
         }
     }
