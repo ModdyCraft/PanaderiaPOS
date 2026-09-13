@@ -60,7 +60,7 @@ fun LoginScreen(
                     value = uiState.sellerId,
                     onValueChange = { viewModel.onEvent(LoginEvent.OnSellerIdChanged(it)) },
                     label = { Text("Identificador") },
-                    placeholder = { Text("V76722430") },
+                    placeholder = { Text("V7·······") },
                     isError = uiState.isError,
                     supportingText = {
                         Text(
