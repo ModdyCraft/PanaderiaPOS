@@ -17,11 +17,11 @@ dependencies {
 
 compose.desktop {
     application {
-        mainClass = "com.example.panaderiapos.MainKt"
+        mainClass = "com.moddy.panaderiapos.MainKt"
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "com.example.panaderiapos"
+            packageName = "com.moddy.panaderiapos"
             packageVersion = "1.0.0"
         }
     }

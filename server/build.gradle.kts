@@ -4,10 +4,10 @@ plugins {
     alias(libs.plugins.serialization)
 }
 
-group = "com.example.panaderiapos"
+group = "com.moddy.panaderiapos"
 version = "1.0.0"
 application {
-    mainClass = "com.example.panaderiapos.ApplicationKt"
+    mainClass = "com.moddy.panaderiapos.ApplicationKt"
 }
 
 dependencies {
@@ -15,6 +15,9 @@ dependencies {
     implementation(libs.logback)
     implementation(libs.ktor.serverCore)
     implementation(libs.ktor.serverNetty)
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.jdbc)
+    implementation(libs.h2)
     implementation(libs.ktor.serialization.kotlinx)
     implementation(libs.ktor.server.content.negociation)
     testImplementation(libs.ktor.serverTestHost)
